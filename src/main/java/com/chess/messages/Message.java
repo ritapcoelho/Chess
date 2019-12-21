@@ -1,6 +1,7 @@
 package com.chess.messages;
 
-import com.chess.ChessServer;
+import com.chess.messages.spec.Color;
+import com.chess.messages.spec.MessageType;
 
 import java.util.Objects;
 
@@ -21,8 +22,7 @@ public class Message {
         Objects.requireNonNull(type);
         this.messageType = MessageType.valueOf(type);
 
-        String color = jsonObject.getString("color");
-        this.color = color == null ? Color.WHITE : Color.valueOf(color);
+        this.color = jsonObject.containsValue("color") ? Color.valueOf(jsonObject.getString("color")) : Color.WHITE;
 
         this.msg = !jsonObject.containsValue("msg") ? null: jsonObject.getString("msg");
         this.gameId = !jsonObject.containsValue("gameId") ? null: jsonObject.getString("gameId");

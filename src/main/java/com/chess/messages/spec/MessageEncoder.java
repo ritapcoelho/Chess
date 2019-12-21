@@ -1,4 +1,6 @@
-package com.chess.messages;
+package com.chess.messages.spec;
+
+import com.chess.messages.ResponseMessage;
 
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;

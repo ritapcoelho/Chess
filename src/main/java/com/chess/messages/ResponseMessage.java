@@ -1,5 +1,7 @@
 package com.chess.messages;
 
+import com.chess.messages.spec.Color;
+
 import java.util.UUID;
 
 import javax.json.Json;

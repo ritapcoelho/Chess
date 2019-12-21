@@ -1,4 +1,4 @@
-package com.chess.messages;
+package com.chess.messages.spec;
 
 public enum MessageType {
     ADD_GAME,
