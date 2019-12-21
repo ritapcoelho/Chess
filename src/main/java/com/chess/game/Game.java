@@ -26,7 +26,7 @@ public class Game {
         this.createrColor = whitePlayer == null ? Color.BLACK : Color.WHITE;
     }
 
-    public static Game startGame(Player player, Color color) {
+    static Game startGame(Player player, Color color) {
         Objects.requireNonNull(player);
         Objects.requireNonNull(color);
         Player whitePlayer = color == Color.WHITE ? player : null;
@@ -42,7 +42,7 @@ public class Game {
         return createrColor;
     }
 
-    public synchronized void addPlayer(Player player) {
+    synchronized void addPlayerAndStart(Player player) {
         if (notStarted()) {
             if (this.whitePlayer == null) {
                 this.whitePlayer = player;
@@ -93,5 +93,24 @@ public class Game {
         } else {
             return blackPlayer;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return Objects.equals(id, game.id) &&
+            state == game.state &&
+            Objects.equals(whitePlayer, game.whitePlayer) &&
+            Objects.equals(blackPlayer, game.blackPlayer) &&
+            Objects.equals(createdOn, game.createdOn) &&
+            Objects.equals(updatedOn, game.updatedOn) &&
+            createrColor == game.createrColor;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, state, whitePlayer, blackPlayer, createdOn, updatedOn, createrColor);
     }
 }

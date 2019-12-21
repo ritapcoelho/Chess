@@ -51,26 +51,27 @@ public class ChessServer implements MessageProcessor {
 
     @Override
     public ResponseMessage processNewGame(Message message) {
-        final Game game = Game.startGame(player, message.getColor());
-        final UUID gameId = game.getId();
-        gameIds.add(gameId);
-        bus.send("new-game", game);
-        this.player.setSession(this);
-        return new ResponseMessage(gameId, "", game.getCreatorColor(), false);
+        final Game game = gameManager.createGame(player, message.getColor());
+        return new ResponseMessage(game.getId(), "", game.getCreatorColor(), false);
     }
 
     @Override
     public ResponseMessage processEnterGame(Message message) {
-        return getGame(message)
-            .map(game -> {
-                gameIds.add(game.getId());
-                game.addPlayer(this.player);
-                this.player.setSession(this);
-                sendMessage(String.format(PLAYER_JOINED, this.player.getUsername()), game.getOtherPlayer(this.player).getSession());
-                bus.send("game-started", game);
-                return new ResponseMessage(game.getId(), "", game.getChallengerColor(), true);
-            })
-            .orElseGet(() -> processNewGame(message));
+        return getGame(message).map(game -> {
+            enterGame(game);
+            return new ResponseMessage(game.getId(), "", game.getChallengerColor(), true);
+        }).orElseGet(() -> processNewGame(message));
+    }
+
+    private void enterGame(final Game game) {
+        addToGamesAndSetSession(game);
+        gameManager.startExistingGame(game, this.player);
+        sendMessage(String.format(PLAYER_JOINED, this.player.getUsername()), game.getOtherPlayer(this.player).getSession());
+    }
+
+    private void addToGamesAndSetSession(final Game game) {
+        this.player.setSession(this);
+        gameIds.add(game.getId());
     }
 
     private Optional<Game> getGame(Message message) {
