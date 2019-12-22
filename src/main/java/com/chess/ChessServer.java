@@ -52,6 +52,7 @@ public class ChessServer implements MessageProcessor {
     @Override
     public ResponseMessage processNewGame(Message message) {
         final Game game = gameManager.createGame(player, message.getColor());
+        addToGamesAndSetSession(game);
         return new ResponseMessage(game.getId(), "", game.getCreatorColor(), false);
     }
 

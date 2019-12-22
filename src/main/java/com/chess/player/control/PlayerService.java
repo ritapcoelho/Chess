@@ -1,7 +1,5 @@
 package com.chess.player.control;
 
-import com.chess.ChessServer;
-
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;

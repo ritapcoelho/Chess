@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class Game {
     private final UUID id;
-    private GameState state; //--> ENUM
+    private GameState state;
     private Player whitePlayer;
     private Player blackPlayer;
     private final LocalDateTime createdOn;

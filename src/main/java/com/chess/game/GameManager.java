@@ -1,6 +1,5 @@
 package com.chess.game;
 
-import com.chess.messages.Message;
 import com.chess.messages.spec.Color;
 import com.chess.player.control.Player;
 
@@ -29,6 +28,7 @@ public class GameManager {
     public Game createGame(Player player, Color color) {
         final Game game = Game.startGame(player, color);
         games.put(game.getId(), game);
+        notStartedGames.add(game);
         return game;
     }
 
