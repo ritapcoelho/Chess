@@ -39,22 +39,33 @@ class BoardTest {
     @ParameterizedTest
     void testPiecePosition(int x, int y, Piece piece) {
         Board board = new Board();
-        Assertions.assertEquals(board.piece(x, y), piece);
+        Assertions.assertEquals(board.piece(x, y).get(), piece);
     }
 
     @Test
     void testPawnPosition() {
         Board board = new Board();
         Set<Piece> whitePawns = Stream.of(0, 1, 2, 3, 4, 5, 6, 7)
-            .map(index -> board.piece(1, index))
+            .map(index -> board.piece(1, index).get())
             .collect(Collectors.toSet());
         Set<Piece> blackPawns = Stream.of(0, 1, 2, 3, 4, 5, 6, 7)
-            .map(index -> board.piece(6, index))
+            .map(index -> board.piece(6, index).get())
         .collect(Collectors.toSet());
         Assertions.assertEquals(1, whitePawns.size());
         Assertions.assertEquals(new Pawn(Color.WHITE), whitePawns.iterator().next());
         Assertions.assertEquals(1, blackPawns.size());
         Assertions.assertEquals(new Pawn(Color.BLACK), blackPawns.iterator().next());
+    }
+
+    @Test
+    void addMoves() {
+        Board board = new Board();
+        //same color
+        Assertions.assertFalse(board.addMove(new Position(0, 0), new Position(0,1)));
+        //no piece
+        Assertions.assertFalse(board.addMove(new Position(3, 2), new Position(4,4)));
+        //Pawn move should be valid
+        Assertions.assertTrue(board.addMove(new Position(1, 1), new Position(2,1)));
     }
 
 }

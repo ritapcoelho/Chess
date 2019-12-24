@@ -13,6 +13,16 @@ public class Knight extends Piece {
     }
 
     @Override
+    public Color getColor() {
+        return color;
+    }
+
+    @Override
+    public boolean canMove(Position start, Position end) {
+        return true;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -5,9 +5,10 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Board {
-    private static final int SIZE = 8;
+    public static final int BOARD_SIZE = 8;
 
     public static final Piece WHITE_ROOK = new Rook(Color.WHITE);
     public static final Piece BLACK_ROOK = new Rook(Color.BLACK);
@@ -38,8 +39,8 @@ public class Board {
     }
 
     private void init() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
                 if (i == 0) {
                     chessBoard.put(i, j, new Square(whitePieces.get(j)));
                 }
@@ -58,7 +59,31 @@ public class Board {
         }
     }
 
-    public Piece piece(int x, int y) {
-        return chessBoard.get(x, y).getPiece();
+    public boolean addMove(final Position starting, final Position ending) {
+        Optional<Piece> optionalPiece = piece(starting);
+        //Maybe all logic should be in the piece ?
+        //Missing: is in check and remains
+        if (optionalPiece.isPresent() &&
+            positionColorsAreDifferent(starting, ending)) {
+            Piece piece = optionalPiece.get();
+            return piece.isMoveValid(starting, ending);
+        } else {
+            return false;
+        }
+    }
+
+    private boolean positionColorsAreDifferent(final Position starting, final Position ending) {
+        return colorInSquare(ending) == null || !colorInSquare(starting).equals(colorInSquare(ending));
+    }
+
+    public Color colorInSquare(final Position position) {
+        return piece(position).map(Piece::getColor).orElse(null);
+    }
+
+    public Optional<Piece> piece(int x, int y) {
+        return Optional.ofNullable(chessBoard.get(x, y).getPiece());
+    }
+    public Optional<Piece> piece(final Position position) {
+        return Optional.ofNullable(chessBoard.get(position.getX(), position.getY()).getPiece());
     }
 }
