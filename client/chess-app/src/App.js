@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Connection from './Connection';
+import Chess from 'react-chess';
 
 class App extends Component {
 
@@ -8,8 +9,10 @@ class App extends Component {
     super(props);
     this.state = {
       value: '',
-      namePicked: false
+      namePicked: false,
+      pieces: Chess.getDefaultLineup()
     }
+    this.handleMovePiece = this.handleMovePiece.bind(this)
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -20,6 +23,21 @@ class App extends Component {
 
   handleSubmit(event) {
     this.setState({namePicked: true})
+  }
+
+  handleMovePiece(piece, fromSquare, toSquare) {
+    const newPieces = this.state.pieces
+        .map((curr, index) => {
+          if (piece.index === index) {
+            return `${piece.name}@${toSquare}`
+          } else if (curr.indexOf(toSquare) === 2) {
+            return false // To be removed from the board
+          }
+          return curr
+        })
+        .filter(Boolean)
+
+    this.setState({pieces: newPieces})
   }
 
   render() {
@@ -34,10 +52,13 @@ class App extends Component {
         <input type="submit" value="Submit" />
       </form>
     } else {
-      bod = <Connection name={this.state.value}></Connection>
+      bod = <div>
+        <Connection name={this.state.value}/>
+        <Chess pieces={this.state.pieces} onMovePiece={this.handleMovePiece}/>
+      </div>
     }
 
-  return <div>{bod}</div>
+    return <div>{bod}</div>
   }
 }
 
