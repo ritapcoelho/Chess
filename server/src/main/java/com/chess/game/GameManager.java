@@ -1,8 +1,5 @@
 package com.chess.game;
 
-import com.chess.messages.spec.Color;
-import com.chess.player.control.Player;
-
 import java.util.Deque;
 import java.util.Map;
 import java.util.Optional;
@@ -20,29 +17,19 @@ public class GameManager {
     private Map<UUID, Game> games = new ConcurrentHashMap<>();
     private Deque<Game> notStartedGames = new FastConcurrentDirectDeque<>();
 
-    @ConsumeEvent("game-started")
-    public void gameStarted(final Game game) {
-        notStartedGames.remove(game);
-    }
-
-    public Game createGame(Player player, Color color) {
-        final Game game = Game.startGame(player, color);
+    @ConsumeEvent("create.game")
+    public Game createGame(GameEventMessage msg) {
+        final Game game = Game.startGame(msg.getPlayer(), msg.getColor());
         games.put(game.getId(), game);
         notStartedGames.add(game);
         return game;
     }
 
-    public void startExistingGame(Game game, Player player) {
-        games.get(game.getId()).addPlayerAndStart(player);
-        notStartedGames.remove(game);
-    }
-
-    @ConsumeEvent("new-game")
-    public void addGame(final Game game) {
-        games.put(game.getId(), game);
-        if (game.notStarted()) {
-            notStartedGames.add(game);
-        }
+    @ConsumeEvent("start.game")
+    public boolean startExistingGame(GameEventMessage msg) {
+        games.get(msg.getGame().getId()).addPlayerAndStart(msg.getPlayer());
+        notStartedGames.remove(msg.getGame());
+        return true;
     }
 
     public Optional<Game> getGame(final UUID gameId) {

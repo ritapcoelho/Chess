@@ -29,21 +29,14 @@ class Connection extends React.Component {
 
   startGameMessage = messageString => {
     // on submitting the ChatInput form, send the message, add it to the list and reset the input
-    const message = { messageType: 'ADD_GAME', color: 'WHITE' }
-    this.ws.send(JSON.stringify(message))
-  }
-
-  joinGameMessage = messageString => {
-    // on submitting the ChatInput form, send the message, add it to the list and reset the input
-    const message = { messageType: 'JOIN_GAME' }
+    const message = { messageType: 'CREATE_GAME', color: 'WHITE' }
     this.ws.send(JSON.stringify(message))
   }
 
   render() {
     return (
       <div>
-        <button onClick={this.startGameMessage}>New Game</button>
-        <button onClick={this.joinGameMessage}>Join Game</button>
+        <button onClick={this.startGameMessage}>Start Game</button>
         {this.state.messages.map(txt => <p>{txt}</p>)}
       </div>
     )

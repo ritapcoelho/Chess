@@ -8,10 +8,10 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 public class ResponseMessage {
-    public final UUID gameId;
-    public final String message;
-    public final Color color;
-    public final boolean ready;
+    public UUID gameId;
+    public String message = "";
+    public Color color;
+    public boolean ready;
 
     public ResponseMessage(UUID gameId, String message, Color color, boolean ready) {
         this.gameId = gameId;
@@ -20,10 +20,19 @@ public class ResponseMessage {
         this.ready = ready;
     }
 
+    public ResponseMessage(UUID gameId, Color color, boolean ready) {
+        this.gameId = gameId;
+        this.color = color;
+        this.ready = ready;
+    }
+
+    public ResponseMessage() {
+    }
+
     public ResponseMessage(final JsonObject jsonObject) {
         this.color = jsonObject.containsKey("color") ? Color.valueOf(jsonObject.getString("color")) : Color.WHITE;
-        this.message = !jsonObject.containsKey("message") ? null: jsonObject.getString("message");
-        this.gameId = !jsonObject.containsKey("gameId") ? null: UUID.fromString(jsonObject.getString("gameId"));
+        this.message = jsonObject.containsKey("message") ? jsonObject.getString("message") : null;
+        this.gameId = jsonObject.containsKey("gameId") ? UUID.fromString(jsonObject.getString("gameId")) : null;
         this.ready = jsonObject.getBoolean("ready");
     }
 
@@ -50,6 +59,22 @@ public class ResponseMessage {
 
     public boolean isReady() {
         return ready;
+    }
+
+    public void setGameId(UUID gameId) {
+        this.gameId = gameId;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     @Override

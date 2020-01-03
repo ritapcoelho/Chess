@@ -1,17 +1,16 @@
 package com.chess.messages;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 public interface MessageProcessor {
     String PLAYER_JOINED = "Player %s joined the game...";
 
-    ResponseMessage processNewGame(Message message);
-    ResponseMessage processEnterGame(Message message);
+    void processStartGameMessage(Message message);
 
-    default Function<Message, ResponseMessage> func(Message message) {
+    default Consumer<Message> func(Message message) {
         switch (message.getMessageType()) {
-            case ADD_GAME: return this::processNewGame;
-            case JOIN_GAME: return this::processEnterGame;
+            case CREATE_GAME:
+                return this::processStartGameMessage;
             default:
                 throw new RuntimeException("messageType has no processor");
         }
