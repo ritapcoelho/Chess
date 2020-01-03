@@ -4,7 +4,7 @@ import com.chess.messages.spec.Color;
 
 import java.util.Objects;
 
-public class Pawn extends Piece {
+public class Pawn implements Piece {
 
     private Color color;
 

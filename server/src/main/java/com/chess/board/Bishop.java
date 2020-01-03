@@ -4,7 +4,7 @@ import com.chess.messages.spec.Color;
 
 import java.util.Objects;
 
-public class Bishop extends Piece {
+public class Bishop implements Piece {
 
     private Color color;
 
@@ -19,7 +19,7 @@ public class Bishop extends Piece {
 
     @Override
     public boolean canMove(Position start, Position end) {
-        return checkXEqualsToY(start,end);
+        return checkXEqualsToY(start, end);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class Bishop extends Piece {
         return Objects.hash(color);
     }
 
-    private boolean checkXEqualsToY(Position start, Position end){
-        return Math.abs(start.getX()-end.getX()) == Math.abs(start.getY()-end.getY());
+    private boolean checkXEqualsToY(Position start, Position end) {
+        return Math.abs(start.getX() - end.getX()) == Math.abs(start.getY() - end.getY());
 
     }
 }
