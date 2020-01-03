@@ -66,7 +66,7 @@ public class Board {
         if (optionalPiece.isPresent() &&
             positionColorsAreDifferent(starting, ending)) {
             Piece piece = optionalPiece.get();
-            return piece.isMoveValid(starting, ending);
+            return piece.isMoveValid(starting, ending, this);
         } else {
             return false;
         }
@@ -86,4 +86,5 @@ public class Board {
     public Optional<Piece> piece(final Position position) {
         return Optional.ofNullable(chessBoard.get(position.getX(), position.getY()).getPiece());
     }
+
 }
