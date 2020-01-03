@@ -19,7 +19,7 @@ public class Bishop extends Piece {
 
     @Override
     public boolean canMove(Position start, Position end) {
-        return true;
+        return checkXEqualsToY(start,end);
     }
 
     @Override
@@ -33,5 +33,10 @@ public class Bishop extends Piece {
     @Override
     public int hashCode() {
         return Objects.hash(color);
+    }
+
+    private boolean checkXEqualsToY(Position start, Position end){
+        return Math.abs(start.getX()-end.getX()) == Math.abs(start.getY()-end.getY());
+
     }
 }
