@@ -18,8 +18,14 @@ public class Knight implements Piece {
     }
 
     @Override
-    public boolean canMove(Position start, Position end) {
-        return true;
+    public boolean canMove(Move move) {
+        return move.numberOfMovesX() == 2 && move.numberOfMovesY() == 1
+            || move.numberOfMovesY() == 2 && move.numberOfMovesX() == 1;
+    }
+
+    @Override
+    public boolean hasObstacles(Board board, Move move) {
+        return false;
     }
 
     @Override

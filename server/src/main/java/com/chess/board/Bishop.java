@@ -18,8 +18,8 @@ public class Bishop implements Piece {
     }
 
     @Override
-    public boolean canMove(Position start, Position end) {
-        return checkXEqualsToY(start, end);
+    public boolean canMove(Move move) {
+        return move.isDiagonal();
     }
 
     @Override
@@ -33,10 +33,5 @@ public class Bishop implements Piece {
     @Override
     public int hashCode() {
         return Objects.hash(color);
-    }
-
-    private boolean checkXEqualsToY(Position start, Position end) {
-        return Math.abs(start.getX() - end.getX()) == Math.abs(start.getY() - end.getY());
-
     }
 }
