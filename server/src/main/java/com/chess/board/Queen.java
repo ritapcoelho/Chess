@@ -19,7 +19,7 @@ public class Queen implements Piece {
 
     @Override
     public boolean canMove(Move move) {
-        return true;
+        return move.isDiagonal() || move.isVertical() || move.isHorizontal();
     }
 
     @Override
