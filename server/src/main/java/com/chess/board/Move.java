@@ -81,6 +81,6 @@ public class Move {
     }
 
     public boolean isDiagonal() {
-        return horizontal;
+        return diagonal;
     }
 }
