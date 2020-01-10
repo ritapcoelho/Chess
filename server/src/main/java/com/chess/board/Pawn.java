@@ -18,7 +18,7 @@ public class Pawn implements Piece {
     }
 
     @Override
-    public boolean canMove(Position start, Position end) {
+    public boolean canMove(Move move) {
         return true;
     }
 

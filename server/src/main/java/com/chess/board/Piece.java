@@ -10,10 +10,10 @@ public interface Piece {
 
     Color getColor();
 
-    boolean canMove(final Position start, final Position end);
+    boolean canMove(final Move move);
 
-    default boolean hasObstacles(final Board board, final Position start, final Position end){
-        Collection<Position> positions = Path.points(start.getX(), start.getY(), end.getX(), end.getY());
+    default boolean hasObstacles(final Board board, final Move move){
+        Collection<Position> positions = Path.points(move);
         for (Position pos: positions){
             if (board.piece(pos).isPresent()) return true;
         }
@@ -21,8 +21,9 @@ public interface Piece {
     }
 
     default boolean isMoveValid(final Position start, final Position end, final Board board) {
-        return !start.equals(end) && isMoveInsideBoard(end) && canMove(start, end)
-                && !hasObstacles(board, start, end);
+        Move move = new Move(start, end);
+        return !start.equals(end) && isMoveInsideBoard(end) && canMove(move)
+                && !hasObstacles(board, move);
     }
 
     private boolean isMoveInsideBoard(final Position end) {
